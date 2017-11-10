@@ -19,7 +19,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private Quaternion m_CharacterTargetRot;
         private Quaternion m_CameraTargetRot;
-        private bool m_cursorIsLocked = true;
+        private bool m_cursorIsLocked = false;
 
         public void Init(Transform character, Transform camera)
         {
@@ -33,17 +33,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
             float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
             float xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
 
-            m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);
-            m_CameraTargetRot *= Quaternion.Euler (-xRot, 0f, 0f);
+            m_CharacterTargetRot *= Quaternion.Euler(0f, yRot, 0f);
+            m_CameraTargetRot *= Quaternion.Euler(-xRot, 0f, 0f);
 
-            if(clampVerticalRotation)
-                m_CameraTargetRot = ClampRotationAroundXAxis (m_CameraTargetRot);
+            if (clampVerticalRotation)
+                m_CameraTargetRot = ClampRotationAroundXAxis(m_CameraTargetRot);
 
-            if(smooth)
+            if (smooth)
             {
-                character.localRotation = Quaternion.Slerp (character.localRotation, m_CharacterTargetRot,
+                character.localRotation = Quaternion.Slerp(character.localRotation, m_CharacterTargetRot,
                     smoothTime * Time.deltaTime);
-                camera.localRotation = Quaternion.Slerp (camera.localRotation, m_CameraTargetRot,
+                camera.localRotation = Quaternion.Slerp(camera.localRotation, m_CameraTargetRot,
                     smoothTime * Time.deltaTime);
             }
             else
@@ -58,7 +58,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public void SetCursorLock(bool value)
         {
             lockCursor = value;
-            if(!lockCursor)
+            if (!lockCursor)
             {//we force unlock the cursor if the user disable the cursor locking helper
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -69,8 +69,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             //if the user set "lockCursor" we check & properly lock the cursos
             if (lockCursor)
-                InternalLockUpdate();
+            InternalLockUpdate();
         }
+
+
+
+
 
         private void InternalLockUpdate()
         {
@@ -80,13 +84,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             else if(Input.GetMouseButtonUp(0))
             {
-                m_cursorIsLocked = true;
+                m_cursorIsLocked = false;
             }
 
             if (m_cursorIsLocked)
             {
                 Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                Cursor.visible = true;
             }
             else if (!m_cursorIsLocked)
             {

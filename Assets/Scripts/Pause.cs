@@ -5,13 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class Pause : MonoBehaviour
 {
-    public GameObject pauseBtn, pauseMenu, slider;
+    public GameObject pauseMenu, slider;
 
+    private void Update()
+    {
+        if (Input.GetButton("Pause"))
+        {
+            OnPause();
+        }
+    }
     public void OnPause()
     {
         pauseMenu.SetActive(true);
         slider.SetActive(false);
-        pauseBtn.SetActive(false);
+        //pauseBtn.SetActive(false);
         Time.timeScale = 0;
     }
 
@@ -19,7 +26,7 @@ public class Pause : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         slider.SetActive(true);
-        pauseBtn.SetActive(true);
+        //pauseBtn.SetActive(true);
         Time.timeScale = 1;
     }
 
